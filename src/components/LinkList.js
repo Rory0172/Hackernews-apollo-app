@@ -27,6 +27,7 @@ class LinkList extends Component {
       </div>
     )
   }
+}
 
 const ALL_LINKS_QUERY = gql`
   # 2

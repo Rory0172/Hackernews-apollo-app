@@ -44,6 +44,7 @@ _createLink = async () => {
       url
     }
   })
+  this.props.history.push(`/`)
 }
 }
 
