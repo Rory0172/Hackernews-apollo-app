@@ -28,7 +28,7 @@ class Link extends Component {
     const userID = localStorage.getItem(GC_USER_ID)
     const voterIds = this.props.link.votes.map(vote => vote.user.id)
     if (voterIds.includes(userID)) {
-      alert(`You ${userID} can only voted once!`)
+      console.log(`You ${userID} can only voted once!`)
       return
     }
     const linkId = this.props.link.id

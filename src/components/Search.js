@@ -37,7 +37,6 @@ class Search extends Component{
     })
     const links = result.data.allLinks
     this.setState({ links })
-    //dkflsfj
   }
 }
 
