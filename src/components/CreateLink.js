@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import { graphql, gql } from 'react-apollo'
+import {GC_USER_ID} from '../constants'
+import { ALL_LINKS_QUERY} from './LinkList'
 
 class CreateLink extends Component {
 
@@ -36,30 +38,48 @@ class CreateLink extends Component {
     )
   }
 
-_createLink = async () => {
-  const { description, url } = this.state
-  await this.props.createLinkMutation({
-    variables: {
-      description,
-      url
+  _createLink = async () => {
+    const postedById = localStorage.getItem(GC_USER_ID)
+    if (!postedById) {
+      console.error('No user logged in')
+      return
     }
-  })
-  this.props.history.push(`/`)
-}
+    const { description, url } = this.state
+    await this.props.createLinkMutation({
+      variables: {
+        description,
+        url,
+        postedById
+      },
+      update: (store, { data: { createLink } }) => {
+        const data = store.readQuery({ query: ALL_LINKS_QUERY })
+        data.allLinks.splice(0,0,createLink)
+        store.writeQuery({
+          query: ALL_LINKS_QUERY,
+          data
+        })
+      }
+    })
+    this.props.history.push(`/`)
+  }
 }
 
 // 1
 const CREATE_LINK_MUTATION = gql`
-  # 2
-  mutation CreateLinkMutation($description: String!, $url: String!) {
+  mutation CreateLinkMutation($description: String!, $url: String!, $postedById: ID!) {
     createLink(
       description: $description,
       url: $url,
+      postedById: $postedById
     ) {
       id
       createdAt
       url
       description
+      postedBy {
+        id
+        name
+      }
     }
   }
 `

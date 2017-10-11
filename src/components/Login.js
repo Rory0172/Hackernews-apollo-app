@@ -87,6 +87,7 @@ class Login extends Component {
   }
 }
 
+
 const CREATE_USER_MUTATION = gql`
   mutation CreateUserMutation($name: String!, $email: String!, $password: String!) {
     createUser(
